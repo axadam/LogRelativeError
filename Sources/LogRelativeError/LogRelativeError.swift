@@ -14,6 +14,7 @@ import Foundation
 ///
 /// Assessing the Reliability of Statistical Software, B.D. McCullogh 1998
 public func LRE<T: LogTenable>(_ x: T, _ c: T) -> T {
+    if x.isNaN { return T(0) }
     switch c {
     case 0: return min( T.significantDecimalDigits, -log10(abs(x - c)         ) )
     case _: return min( T.significantDecimalDigits, -log10(abs(x - c) / abs(c)) )
