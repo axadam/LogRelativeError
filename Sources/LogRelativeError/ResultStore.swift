@@ -12,12 +12,14 @@ public struct LREResult {
     public let testCase: String
     public let field: String
     public let lre: Double
+    public let annotation: String?
     
-    public init(table: String, testCase: String, field: String, lre: Double) {
+    public init(table: String, testCase: String, field: String, lre: Double, annotation: String? = nil) {
         self.table = table
         self.testCase = testCase
         self.field = field
         self.lre = lre
+        self.annotation = annotation
     }
 }
 
@@ -41,7 +43,11 @@ struct LRETable {
         let mdRows = testCases.map { testCase in
             return fields.reduce("| \(testCase) |", { accum, field in
                 if let entry = entries.first(where: { $0.testCase == testCase && $0.field == field} ) {
-                    return "\(accum) \((entry.lre * 10).rounded() / 10) |"
+                    let ann = { () -> String in
+                        guard let annot = entry.annotation else { return "" }
+                        return " (\(annot)) "
+                    }()
+                    return "\(accum) \((entry.lre * 10).rounded() / 10) \(ann)|"
                 }
                 return "\(accum) . |"
             })

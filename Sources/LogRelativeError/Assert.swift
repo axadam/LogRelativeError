@@ -42,7 +42,7 @@ public func AssertLRE<T: LogTenable>(_ x: T, _ c: T, digits: T, file: StaticStri
 ///   - table: If using a result store specify which table this result goes in
 ///   - testCase: If using a result store specify which row this result goes in
 ///   - field: If using a result store specify which column this result goes in
-public func AssertLRE<T: LogTenable>(_ x: T, _ c: String, exact: Bool = false, digits: T? = nil, resultStore: ResultStore? = nil, table: String? = nil, testCase: String? = nil, field: String? = nil, file: StaticString = #file, line: UInt = #line) {
+public func AssertLRE<T: LogTenable>(_ x: T, _ c: String, exact: Bool = false, digits: T? = nil, resultStore: ResultStore? = nil, table: String? = nil, testCase: String? = nil, field: String? = nil, annotation: String? = nil, file: StaticString = #file, line: UInt = #line) {
     let referenceDigits = countDigits(c)
     guard referenceDigits > 0 else { fatalError("couldn't count reference value digits")}
     guard let referenceValue = T(c) else { fatalError("couldn't parse reference value") }
@@ -58,8 +58,8 @@ public func AssertLRE<T: LogTenable>(_ x: T, _ c: String, exact: Bool = false, d
         return digitsPossible
     }()
     if let resultStore = resultStore, let table = table, let testCase = testCase, let field = field {
-        let lreReult = LREResult(table: table, testCase: testCase, field: field, lre: Double(lre.description)!)
-        resultStore.addResult(lreReult)
+        let lreResult = LREResult(table: table, testCase: testCase, field: field, lre: Double(lre.description)!, annotation: annotation)
+        resultStore.addResult(lreResult)
     }
     XCTAssertGreaterThanOrEqual(lre, digitsToUse, "saw \(value)\(rawString) vs \(c)", file: file, line: line)
     XCTAssertLessThanOrEqual(lre, digitsToUse + T(1)/T(10), "BETTER than expected. Raise digits parameter.", file: file, line: line)

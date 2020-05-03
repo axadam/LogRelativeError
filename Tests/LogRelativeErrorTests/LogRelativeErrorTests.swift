@@ -22,6 +22,24 @@ final class LogRelativeErrorTests: XCTestCase {
         XCTAssertEqual(countDigits("0.00001234"), 4)
         XCTAssertEqual(countDigits("123456.789"), 9)
     }
+    
+    func testStore() {
+        let rs: ResultStore = ResultStore()
+        let t = "Table 1"
+        let f = "Field A"
+        
+        AssertLRE(1.2340, "1.2345", digits: 3.3, resultStore: rs, table: t, testCase: "no annotation", field: f)
+        AssertLRE(1.2345, "1.2345", resultStore: rs, table: t, testCase: "annotation", field: f, annotation: "35 iters")
+        
+        let md = """
+# Table 1
+| Case | Field A |
+| --- | ---: |
+| annotation | 5.0  (35 iters) |
+| no annotation | 3.4 |
+"""
+        XCTAssertEqual(md, rs.md())
+    }
 
     static var allTests = [
         ("testLRENonZero", testLRENonZero),
