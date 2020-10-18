@@ -58,7 +58,7 @@ public func AssertLRE<T: LogTenable>(_ x: T, _ c: String, exact: Bool = false, d
         return digitsPossible
     }()
     if let resultStore = resultStore, let table = table, let testCase = testCase, let field = field {
-        let lreResult = LREResult(table: table, testCase: testCase, field: field, lre: Double(lre.description)!, annotation: annotation)
+        let lreResult = LREResult(table: table, testCase: testCase, field: field, lre: Double(lre.description)!, digitsPossible: Double(digitsPossible.description)!, annotation: annotation)
         resultStore.addResult(lreResult)
     }
     XCTAssertGreaterThanOrEqual(lre, digitsToUse, "saw \(value)\(rawString) vs \(c)", file: file, line: line)

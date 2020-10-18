@@ -35,7 +35,7 @@ final class LogRelativeErrorTests: XCTestCase {
 # Table 1
 | Case | Field A |
 | --- | ---: |
-| annotation | 5.0  (35 iters) |
+| annotation | __5.0__  (35 iters) |
 | no annotation | 3.4 |
 """
         XCTAssertEqual(md, rs.md())

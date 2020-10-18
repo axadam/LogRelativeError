@@ -12,15 +12,21 @@ public struct LREResult {
     public let testCase: String
     public let field: String
     public let lre: Double
+    public let digitsPossible: Double
     public let annotation: String?
     
-    public init(table: String, testCase: String, field: String, lre: Double, annotation: String? = nil) {
+    public init(table: String, testCase: String, field: String, lre: Double, digitsPossible: Double, annotation: String? = nil) {
         self.table = table
         self.testCase = testCase
         self.field = field
         self.lre = lre
+        self.digitsPossible = digitsPossible
         self.annotation = annotation
     }
+}
+
+public extension LREResult {
+    var isFullPrecision: Bool { return lre >= digitsPossible }
 }
 
 struct LRETable {
@@ -47,7 +53,8 @@ struct LRETable {
                         guard let annot = entry.annotation else { return "" }
                         return " (\(annot)) "
                     }()
-                    return "\(accum) \((entry.lre * 10).rounded() / 10) \(ann)|"
+                    let b = entry.isFullPrecision ? "__" : ""
+                    return "\(accum) \(b)\((entry.lre * 10).rounded() / 10)\(b) \(ann)|"
                 }
                 return "\(accum) . |"
             })
